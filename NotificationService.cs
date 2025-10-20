@@ -4,10 +4,15 @@ using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
 
-public static class SMSVerification
-{
+// Notifications (Guild Alerts)
+// Om ett quest närmar sig deadline (t.ex. < 24 timmar kvar):
 
-    public static bool SendVerificationCode(string phoneNumber)
+// Skicka SMS eller email → “⚔️ Hjälte, ditt uppdrag [Titel] måste vara klart imorgon!”.
+
+// Användaren kan också manuellt begära en rapport i menyn för att se vilka uppdrag som är nära deadline.
+public static class Notifications
+{
+    static Notifications()
     {
         //Ladda .env
         DotEnv.Load();
@@ -24,30 +29,16 @@ public static class SMSVerification
 
         //Skapar en fake telefon
         TwilioClient.Init(accountSid, authToken);
+    }
 
-        Random random = new Random();
-        int secretCode = random.Next(1000, 9999);
-
-        //Skickar iväg ett sms med koden
+    public static void SendQuestDeadlineAlert(string Username, string phoneNumber, string questTitle, DateTime dueDate)
+    {
         var from = Environment.GetEnvironmentVariable("TWILIO_PHONE_NUMBER"); // Twilio-nummer
 
         var msg = MessageResource.Create(
             to: new PhoneNumber(phoneNumber),
             from: from,
-            body: $"Din verifieringskod är: {secretCode}"
+            body: $"⚔️ {Username}! Ditt uppdrag {questTitle} måste vara klart imorgon {dueDate:yyyy-MM-dd}!"
         );
-
-        Console.WriteLine("Ett SMS med en verifieringskod har skickats till ditt telefonnummer. Vänligen ange koden för att fortsätta:");
-        string UserSecretCode = Console.ReadLine();
-        if (UserSecretCode == secretCode.ToString())
-        {
-            Console.WriteLine("Du är verifierad! Välkommen till Quest Tracker.");
-            return true; 
-        }
-        else
-        {
-            Console.WriteLine("Fel kod. Vänligen försök igen!");
-            return false;
-        }
     }
 }

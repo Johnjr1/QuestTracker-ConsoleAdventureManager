@@ -32,9 +32,10 @@ public static class Menu
             Console.WriteLine("1) Lägg till uppdrag");
             Console.WriteLine("2) Visa uppdrag");
             Console.WriteLine("3) Markera uppdrag som klart");
-            Console.WriteLine("4) Request Guild Advisor help (AI)");
-            Console.WriteLine("5) Show guild report");
-            Console.WriteLine("6) Logga ut");
+            Console.WriteLine("4) Uppdatera uppdrag");
+            Console.WriteLine("5) Guild Advisor (AI hjälp)");
+            Console.WriteLine("6) Guild report");
+            Console.WriteLine("7) Logga ut");
             Console.Write("Val: ");
             var c = Console.ReadLine();
 
@@ -43,9 +44,10 @@ public static class Menu
                 case "1": QuestManager.AddQuest(user); break;
                 case "2": QuestManager.ShowQuests(user); break;
                 case "3": QuestManager.CompleteQuest(user); break;
-                case "4": Console.WriteLine("Be om hjälp kommer vara här."); break;
-                case "5": Console.WriteLine("show guild report kommer vara här"); break;
-                case "6": User.Logout(); return;
+                case "4": QuestManager.UpdateQuest(user); break;
+                case "5": Console.WriteLine("Be om hjälp kommer vara här."); break;
+                case "6": QuestManager.ShowFullQuestReport(user); break;
+                case "7": User.Logout(); return;
                 default: Console.WriteLine("Ogiltigt val."); break;
             }
         }
