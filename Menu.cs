@@ -1,6 +1,6 @@
 public static class Menu
 {
-    public static void Start()
+   public static async Task Start()
     {
         while (true)
         {
@@ -15,7 +15,7 @@ public static class Menu
             {
                 case "1": User.Register(); break;
                 case "2":
-                    if (User.Login()) HeroMenu();
+                    if (User.Login()) await HeroMenu();
                     break;
                 case "3": return;
                 default: Console.WriteLine("Ogiltigt val."); break;
@@ -23,7 +23,7 @@ public static class Menu
         }
     }
 
-    private static void HeroMenu()
+    private static async Task HeroMenu()
     {
         var user = User.LoggedInUser!;
         while (true)
@@ -45,7 +45,7 @@ public static class Menu
                 case "2": QuestManager.ShowQuests(user); break;
                 case "3": QuestManager.CompleteQuest(user); break;
                 case "4": QuestManager.UpdateQuest(user); break;
-                case "5": Console.WriteLine("Be om hjälp kommer vara här."); break;
+                case "5": await GuildAdvisorAI.GuildAdvisor(); break;
                 case "6": QuestManager.ShowFullQuestReport(user); break;
                 case "7": User.Logout(); return;
                 default: Console.WriteLine("Ogiltigt val."); break;

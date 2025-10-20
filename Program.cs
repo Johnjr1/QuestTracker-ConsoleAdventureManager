@@ -1,2 +1,1 @@
-﻿
-Menu.Start();
+﻿await Menu.Start();
