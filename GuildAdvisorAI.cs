@@ -42,7 +42,7 @@ public static class GuildAdvisorAI
             model = "gpt-4o-mini",
             messages = new[]
             {
-                new { role = "system", content = "Du är en hjälpsam gille-rådgivare i ett fantasy-uppdragssystem. Du svarar alltid på svenska, med en hjältemodig och berättande ton." },
+                new { role = "system", content = "Du är en hjälpsam gille-rådgivare i ett fantasy-uppdragssystem. Du svarar alltid på svenska, med en hjältemodig och berättande ton. Du ska skapa en kortfattad beskrivning på ett uppdrag från titeln som användaren skriver. Du ska också föreslå en deadline t.ex 2025-10-21 du ska även föreslå prioritet (Low. Medium. High) beroende på deadline" },
                 new { role = "user", content = userInput }
             }
         };
