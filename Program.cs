@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Spectre.Console;
 
 internal class Program
 {
@@ -12,18 +13,67 @@ internal class Program
     {
         try
         {
-            // Start song loop
+            // Starta låten i bakgrunden
             _cts = new CancellationTokenSource();
             _ = LoopSongAsync("Resources/song.wav", _cts.Token);
 
-            // Start your menu
+            //Startup sekvens
+            ShowStartupSequence();
+            
+            // Starta menyn
             await Menu.Start();
         }
         finally
         {
-            // Stop the song when program exits
+            // Stänger av låten så den inte fortsätter spela
             StopSong();
         }
+    }
+
+    private static void ShowStartupSequence()
+    {
+        Console.Clear();
+
+        var title = new FigletText("QUEST GUILD")
+            .Color(Color.Yellow)
+            .Centered();
+        
+        var subtitle = new FigletText("ADVENTURE TERMINAL")
+            .Color(Color.Blue)
+            .Centered();
+        
+        AnsiConsole.Write(title);
+        AnsiConsole.Write(subtitle);
+        
+        AnsiConsole.Status()
+            .Start("Initializing the Guild Halls...", ctx =>
+            {
+                Thread.Sleep(1000);
+                ctx.Status("Awakening the Guild Advisor...");
+                Thread.Sleep(1000);
+                ctx.Status("Preparing quest scrolls...");
+                Thread.Sleep(1000);
+                ctx.Status("Lighting the torches...");
+                Thread.Sleep(1000);
+                ctx.Status("The Guild is ready for your arrival!");
+                Thread.Sleep(500);
+            });
+        
+        // Välkomstmeddelande
+        var welcomePanel = new Panel(
+            "[bold yellow]🌟 Welcome to the Quest Guild Adventure Terminal! 🌟[/]\n\n" +
+            "[italic]Where heroes are forged and legends are born...[/]\n" +
+            "Your epic journey begins here, brave adventurer!"
+        )
+        {
+            Header = new PanelHeader("[bold green]⚔️ GUILD HALLS OPEN ⚔️[/]", Justify.Center),
+            Border = BoxBorder.Double,
+            BorderStyle = new Style(Color.Green)
+        };
+        
+        AnsiConsole.Write(welcomePanel);
+        AnsiConsole.MarkupLine("\n[grey]Press any key to enter the guild halls...[/]");
+        Console.ReadKey(true);
     }
 
     private static async Task LoopSongAsync(string filePath, CancellationToken token)
