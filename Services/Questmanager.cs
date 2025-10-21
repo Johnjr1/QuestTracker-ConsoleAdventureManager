@@ -1,7 +1,10 @@
 public static class QuestManager
 {
+
+    // Lägg till ett nytt uppdrag
     public static async Task AddQuest(User user)
     {
+        // Fråga om chat ska hjälpa till att skapa uppdraget
         Console.WriteLine("\nVill du använda AI-hjälp för att skapa uppdraget?");
         Console.WriteLine("1) Ja, låt Guild Advisor skapa uppdraget");
         Console.WriteLine("2) Nej, skapa manuellt");
@@ -12,9 +15,10 @@ public static class QuestManager
 
         if (aiChoice == "1")
         {
+            // Använd AI för att generera uppdrag
             Console.Write("Skriv en titel för ditt uppdrag: ");
             var title = Console.ReadLine()!;
-            newQuest = await GuildAdvisorAI.GenerateQuestFromTitle(title);
+            newQuest = await GuildAdvisorAI.GenerateQuestFromTitle(title); // Anropa AI-tjänsten
 
             if (newQuest == null)
             {
@@ -22,19 +26,21 @@ public static class QuestManager
             }
             else
             {
+                // Lägg till det genererade uppdraget till användarens lista
                 user.Quests.Add(newQuest);
                 Console.WriteLine($"\n🧙‍♂️ Guild Advisor skapade uppdraget:\n" +
                                   $"Titel: {newQuest.Title}\n" +
                                   $"Beskrivning: {newQuest.Description}\n" +
                                   $"Prioritet: {newQuest.Priority}\n" +
                                   $"Deadline: {newQuest.DueDate:d}\n");
-                Console.WriteLine("\n✅ Uppdraget skapat, går tillbaks till menyn...");
-                await Task.Delay(1500);
+                Console.WriteLine("✅ Uppdraget skapat");
+                Console.WriteLine("Tryck på valfri tangent för att gå tillbaks till menyn...");
+                Console.ReadKey();
                 return;
             }
         }
 
-        // Fallback till manuell skapning
+        // Manuell skapelse av uppdrag
         Console.WriteLine("Titel: ");
         var manualTitle = Console.ReadLine()!;
         Console.WriteLine("Beskrivning: ");
@@ -52,10 +58,13 @@ public static class QuestManager
             Priority = string.IsNullOrWhiteSpace(priority) ? "Medium" : priority
         });
 
-        Console.WriteLine("\n✅ Uppdraget skapat, går tillbaks till menyn...");
-        await Task.Delay(1500);
+        Console.WriteLine("✅ Uppdraget skapat");
+        Console.WriteLine("Tryck på valfri tangent för att gå tillbaks till menyn...");
+        Console.ReadKey();
+        return;
     }
 
+    // Visa alla uppdrag som tillhör en användare
     public static void ShowQuests(User user)
     {
         if (user.Quests.Count == 0)
@@ -64,6 +73,7 @@ public static class QuestManager
             return;
         }
 
+        // Lista alla uppdrag för användaren
         foreach (var q in user.Quests)
         {
             var status = q.IsCompleted ? "Klar" : "Pågår";
@@ -72,6 +82,7 @@ public static class QuestManager
         }
     }
 
+    // Markera ett uppdrag som klart
     public static void CompleteQuest(User user)
     {
         Console.WriteLine("Ange titel på uppdraget: ");
@@ -86,6 +97,8 @@ public static class QuestManager
         Console.WriteLine("Uppdrag markerat som klart!");
     }
 
+
+    // Uppdatera ett befintligt uppdrag
     public static void UpdateQuest(User user)
     {
         Console.Write("Ange titel på uppdraget att uppdatera: ");
@@ -114,6 +127,8 @@ public static class QuestManager
 
         Console.WriteLine("Uppdrag uppdaterat!");
     }
+
+    // Kontrollera om några uppdrag närmar sig deadline och skicka notifikationer
     public static void CheckForUpcomingDeadlines(User user)
     {
         var soonDue = user.Quests
@@ -135,11 +150,12 @@ public static class QuestManager
             foreach (var quest in soonDue)
             {
                 Console.WriteLine($" - {q.Title} (Deadline: {q.DueDate:g})");
-
                 Notifications.SendQuestDeadlineAlert(user.Username, user.PhoneNumber, q.Title, q.DueDate);
             }
         }
     }
+
+    // Visa en fullständig rapport över användarens uppdrag
     public static void ShowFullQuestReport(User user)
     {
         int activeQuests = user.Quests.Count(q => !q.IsCompleted);
@@ -159,7 +175,8 @@ public static class QuestManager
                 Console.WriteLine($"- {q.Title} (Deadline: {q.DueDate:g})");
             }
         }
-
+        
+        // Sammanfattning av användarens uppdrag
         Console.WriteLine("\nSammanfattning:");
         Console.WriteLine($"Du har {activeQuests} pågående quest{(activeQuests == 1 ? "" : "s")}, " +
                         $"{urgentQuests} måste slutföras snart, " +

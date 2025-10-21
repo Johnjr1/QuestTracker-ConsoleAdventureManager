@@ -12,7 +12,7 @@ public static class SMSVerification
         //Ladda .env
         DotEnv.Load();
 
-        //Tar hand om credentials
+        //Tar hand om credentials för Twilio
         var accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
         var authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
 
@@ -37,6 +37,7 @@ public static class SMSVerification
             body: $"Din verifieringskod är: {secretCode}"
         );
 
+        //Ber användaren mata in koden
         Console.WriteLine("Ett SMS med en verifieringskod har skickats till ditt telefonnummer. Vänligen ange koden för att fortsätta:");
         string UserSecretCode = Console.ReadLine();
         if (UserSecretCode == secretCode.ToString())

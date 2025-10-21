@@ -1,9 +1,13 @@
+using Spectre.Console;
 public static class Menu
 {
+
+    // Startmeny för Quest Tracker
     public static async Task Start()
     {
         while (true)
         {
+            Console.Clear(); // Clear console for better readability
             Console.WriteLine("\n=== QUEST GUILD TERMINAL ===");
             Console.WriteLine("1) Registrera hjälte");
             Console.WriteLine("2) Logga in");
@@ -23,11 +27,14 @@ public static class Menu
         }
     }
 
+    // Hjälte-meny efter inloggning
     private static async Task HeroMenu()
     {
+        Console.Clear();
         var user = User.LoggedInUser!;
         while (true)
         {
+            Console.Clear(); // Clear console for better readability
             Console.WriteLine($"\n=== GUILD MENY — {user.Username} ===");
             Console.WriteLine("1) Lägg till uppdrag");
             Console.WriteLine("2) Visa uppdrag");
@@ -42,9 +49,21 @@ public static class Menu
             switch (c)
             {
                 case "1": await QuestManager.AddQuest(user); break;
-                case "2": QuestManager.ShowQuests(user); break;
-                case "3": QuestManager.CompleteQuest(user); break;
-                case "4": QuestManager.UpdateQuest(user); break;
+                case "2":
+                    QuestManager.ShowQuests(user);
+                    AnsiConsole.MarkupLine("\n[grey]Tryck på en tangent för att återgå till menyn...[/]");
+                    Console.ReadKey(true);
+                    break;
+                case "3":
+                    QuestManager.CompleteQuest(user);
+                    AnsiConsole.MarkupLine("\n[grey]Tryck på en tangent för att återgå till menyn...[/]");
+                    Console.ReadKey(true);
+                    break;
+                case "4":
+                    QuestManager.UpdateQuest(user);
+                    AnsiConsole.MarkupLine("\n[grey]Tryck på en tangent för att återgå till menyn...[/]");
+                    Console.ReadKey(true);
+                    break;
                 case "5":
                     Console.Write("Ange titeln för uppdraget du vill generera med AI: ");
                     var title = Console.ReadLine() ?? "";
@@ -67,9 +86,17 @@ public static class Menu
                         Console.WriteLine("AI kunde inte skapa uppdraget. Försök igen senare.");
                     }
                     break;
-                case "6": QuestManager.ShowFullQuestReport(user); break;
+                case "6":
+                    QuestManager.ShowFullQuestReport(user);
+                    AnsiConsole.MarkupLine("\n[grey]Tryck på en tangent för att återgå till menyn...[/]");
+                    Console.ReadKey(true);
+                    break;
                 case "7": User.Logout(); return;
-                default: Console.WriteLine("Ogiltigt val."); break;
+                default:
+                    Console.WriteLine("Ogiltigt val.");
+                    AnsiConsole.MarkupLine("\n[grey]Tryck på en tangent för att återgå till menyn...[/]");
+                    Console.ReadKey(true);
+                    break;
             }
         }
     }

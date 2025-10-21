@@ -1,5 +1,6 @@
 using System.Text;
 using System.Security.Cryptography;
+using Spectre.Console;
 
 
 // 1. User Registration & Login (Hero Profile)
@@ -7,6 +8,7 @@ using System.Security.Cryptography;
 // Username (hjältenamn)
 // Password (lösenord) – styrkekontroll (minst 6 tecken, 1 siffra, 1 stor bokstav, 1 specialtecken).
 // Email eller Phone för 2FA.
+
 public class User
 {
     public string Username { get; set; } = "";
@@ -51,7 +53,7 @@ public class User
             Console.Write("Bekräfta lösenordet: ");
             string confirmPassword = Console.ReadLine()!;
 
-            // Kontrollera att lösenorden matchar
+            // Skriv lösenordet två gånger och kontrollera att de matchar
             if (password != confirmPassword)
             {
                 Console.WriteLine("⚠️ Lösenorden matchar inte. Försök igen!");
@@ -91,7 +93,7 @@ public class User
             break;
         }
 
-        //Skapa användare
+        //Skapa användare och lägg till i listan
         Users.Add(new User
         {
             Username = username,
@@ -100,6 +102,8 @@ public class User
         });
 
         Console.WriteLine("Registrering lyckades!");
+        AnsiConsole.MarkupLine("\n[grey]Tryck på en tangent för att återgå till menyn...[/]");
+        Console.ReadKey(true);
     }
 
     // Inloggning av hjälte
@@ -116,6 +120,8 @@ public class User
             Console.WriteLine("Fel användarnamn eller lösenord.");
             return false;
         }
+
+        // Telefonverifiering 2FA
         bool verified = SMSVerification.SendVerificationCode(user.PhoneNumber);
         if (!verified)
         {
