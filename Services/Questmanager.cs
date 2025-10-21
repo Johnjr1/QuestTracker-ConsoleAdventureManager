@@ -1,25 +1,59 @@
 public static class QuestManager
 {
-    public static void AddQuest(User user)
+    public static async Task AddQuest(User user)
     {
+        Console.WriteLine("\nVill du använda AI-hjälp för att skapa uppdraget?");
+        Console.WriteLine("1) Ja, låt Guild Advisor skapa uppdraget");
+        Console.WriteLine("2) Nej, skapa manuellt");
+        Console.Write("Val: ");
+        var aiChoice = Console.ReadLine();
+
+        Quest? newQuest = null;
+
+        if (aiChoice == "1")
+        {
+            Console.Write("Skriv en titel för ditt uppdrag: ");
+            var title = Console.ReadLine()!;
+            newQuest = await GuildAdvisorAI.GenerateQuestFromTitle(title);
+
+            if (newQuest == null)
+            {
+                Console.WriteLine("AI kunde inte generera uppdraget. Skapar manuellt istället.");
+            }
+            else
+            {
+                user.Quests.Add(newQuest);
+                Console.WriteLine($"\n🧙‍♂️ Guild Advisor skapade uppdraget:\n" +
+                                  $"Titel: {newQuest.Title}\n" +
+                                  $"Beskrivning: {newQuest.Description}\n" +
+                                  $"Prioritet: {newQuest.Priority}\n" +
+                                  $"Deadline: {newQuest.DueDate:d}\n");
+                Console.WriteLine("\n✅ Uppdraget skapat, går tillbaks till menyn...");
+                await Task.Delay(1500);
+                return;
+            }
+        }
+
+        // Fallback till manuell skapning
         Console.WriteLine("Titel: ");
-        var title = Console.ReadLine()!;
+        var manualTitle = Console.ReadLine()!;
         Console.WriteLine("Beskrivning: ");
         var desc = Console.ReadLine()!;
-        Console.WriteLine("Deadline (t.ex. 2025-10-20): ");
+        Console.WriteLine("Deadline (yyyy-mm-dd): ");
         DateTime.TryParse(Console.ReadLine(), out var deadline);
         Console.WriteLine("Prioritet (Low, Medium, High): ");
         var priority = Console.ReadLine()!;
 
         user.Quests.Add(new Quest
         {
-            Title = title,
+            Title = manualTitle,
             Description = desc,
-            DueDate = deadline,
+            DueDate = deadline == default ? DateTime.Now.AddDays(3) : deadline,
             Priority = string.IsNullOrWhiteSpace(priority) ? "Medium" : priority
         });
 
-        Console.WriteLine("Uppdrag tillagt!");
+        Console.WriteLine("\n✅ Uppdraget skapat, går tillbaks till menyn...");
+        await Task.Delay(1500);
     }
 
     public static void ShowQuests(User user)
@@ -32,7 +66,7 @@ public static class QuestManager
 
         foreach (var q in user.Quests)
         {
-            var status = q.IsCompleted ? "✅ Klar" : "🕓 Pågår";
+            var status = q.IsCompleted ? "Klar" : "Pågår";
             Console.WriteLine($"{status} - {q.Title} (Deadline: {q.DueDate:d})");
             Console.WriteLine($"   {q.Description}");
         }
@@ -73,7 +107,7 @@ public static class QuestManager
         if (!string.IsNullOrWhiteSpace(newDesc))
             quest.Description = newDesc;
 
-        Console.Write("Ny deadline (t.ex. 2025-10-20, lämna tom för att behålla nuvarande): ");
+        Console.Write("Ny deadline (yyy-mm-dd, lämna tom för att behålla nuvarande): ");
         var newDeadlineInput = Console.ReadLine()!;
         if (DateTime.TryParse(newDeadlineInput, out var newDeadline))
             quest.DueDate = newDeadline;

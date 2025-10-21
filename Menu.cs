@@ -1,6 +1,6 @@
 public static class Menu
 {
-   public static async Task Start()
+    public static async Task Start()
     {
         while (true)
         {
@@ -41,11 +41,32 @@ public static class Menu
 
             switch (c)
             {
-                case "1": QuestManager.AddQuest(user); break;
+                case "1": await QuestManager.AddQuest(user); break;
                 case "2": QuestManager.ShowQuests(user); break;
                 case "3": QuestManager.CompleteQuest(user); break;
                 case "4": QuestManager.UpdateQuest(user); break;
-                case "5": await GuildAdvisorAI.GuildAdvisor(); break;
+                case "5":
+                    Console.Write("Ange titeln för uppdraget du vill generera med AI: ");
+                    var title = Console.ReadLine() ?? "";
+                    var generatedQuest = await GuildAdvisorAI.GenerateQuestFromTitle(title);
+
+                    if (generatedQuest != null)
+                    {
+                        Console.WriteLine("\n🧙‍♂️ Guild Advisor skapade ett nytt uppdrag:");
+                        Console.WriteLine($"Titel: {generatedQuest.Title}");
+                        Console.WriteLine($"Beskrivning: {generatedQuest.Description}");
+                        Console.WriteLine($"Prioritet: {generatedQuest.Priority}");
+                        Console.WriteLine($"Deadline: {generatedQuest.DueDate:d}");
+
+                        // Lägg till i användarens quest-lista
+                        user.Quests.Add(generatedQuest);
+                        Console.WriteLine("\nUppdraget har sparats till din lista!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("AI kunde inte skapa uppdraget. Försök igen senare.");
+                    }
+                    break;
                 case "6": QuestManager.ShowFullQuestReport(user); break;
                 case "7": User.Logout(); return;
                 default: Console.WriteLine("Ogiltigt val."); break;
