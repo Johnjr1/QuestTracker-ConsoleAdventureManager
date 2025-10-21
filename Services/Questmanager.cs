@@ -79,6 +79,7 @@ public static class QuestManager
             var status = q.IsCompleted ? "Klar" : "Pågår";
             Console.WriteLine($"{status} - {q.Title} (Deadline: {q.DueDate:d})");
             Console.WriteLine($"   {q.Description}");
+            Console.WriteLine($"   Prioritet: {q.Priority}\n");
         }
     }
 

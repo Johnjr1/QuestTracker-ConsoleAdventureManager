@@ -11,6 +11,19 @@
           "lib/netstandard2.1/dotenv.net.dll": {}
         }
       },
+      "ManagedBass/4.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/ManagedBass.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/ManagedBass.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.0": {
         "type": "package",
         "compile": {
@@ -517,6 +530,25 @@
           }
         }
       },
+      "System.Windows.Extensions/9.0.10": {
+        "type": "package",
+        "compile": {
+          "lib/net9.0/System.Windows.Extensions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/System.Windows.Extensions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net9.0/System.Windows.Extensions.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
       "Twilio/7.13.4": {
         "type": "package",
         "dependencies": {
@@ -551,6 +583,25 @@
         "dotenv.net.nuspec",
         "lib/netstandard2.0/dotenv.net.dll",
         "lib/netstandard2.1/dotenv.net.dll"
+      ]
+    },
+    "ManagedBass/4.0.2": {
+      "sha512": "EzVnBGxqjSzRgLuo94Muauvk1SPwD3LOOHp+4c33iC1EBez+mDW71+gJL35E9V5U5Sb/WNeJxnzHtUNOeOfqdw==",
+      "type": "package",
+      "path": "managedbass/4.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "icon.png",
+        "lib/net45/ManagedBass.dll",
+        "lib/net45/ManagedBass.xml",
+        "lib/net8.0/ManagedBass.dll",
+        "lib/net8.0/ManagedBass.xml",
+        "lib/netstandard2.0/ManagedBass.dll",
+        "lib/netstandard2.0/ManagedBass.xml",
+        "managedbass.4.0.2.nupkg.sha512",
+        "managedbass.nuspec"
       ]
     },
     "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.0": {
@@ -2085,6 +2136,30 @@
         "system.threading.tasks.nuspec"
       ]
     },
+    "System.Windows.Extensions/9.0.10": {
+      "sha512": "6I+OzjcTx2gtZotjDQXEhWdkfPVxRvT9r9nFWsgt9Of6GwLt9szpIlxx0z2dP3dprg6K3zRU/5bbig+zoVKpfg==",
+      "type": "package",
+      "path": "system.windows.extensions/9.0.10",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net8.0/System.Windows.Extensions.dll",
+        "lib/net8.0/System.Windows.Extensions.xml",
+        "lib/net9.0/System.Windows.Extensions.dll",
+        "lib/net9.0/System.Windows.Extensions.xml",
+        "runtimes/win/lib/net8.0/System.Windows.Extensions.dll",
+        "runtimes/win/lib/net8.0/System.Windows.Extensions.xml",
+        "runtimes/win/lib/net9.0/System.Windows.Extensions.dll",
+        "runtimes/win/lib/net9.0/System.Windows.Extensions.xml",
+        "system.windows.extensions.9.0.10.nupkg.sha512",
+        "system.windows.extensions.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
     "Twilio/7.13.4": {
       "sha512": "2K0w2cLKmFv/0IMHkOLQPqjvn9COVho7sK/X1mV7aympf4tYVmpQ3ZpiLnlYSygx6y+6uexPMK6JWMlyQtFaWA==",
       "type": "package",
@@ -2108,8 +2183,10 @@
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "ManagedBass >= 4.0.2",
       "Spectre.Console >= 0.52.0",
       "Spectre.Console.Cli >= 0.52.0",
+      "System.Windows.Extensions >= 9.0.10",
       "Twilio >= 7.13.4",
       "dotenv.net >= 4.0.0"
     ]
@@ -2157,6 +2234,10 @@
       "net9.0": {
         "targetAlias": "net9.0",
         "dependencies": {
+          "ManagedBass": {
+            "target": "Package",
+            "version": "[4.0.2, )"
+          },
           "Spectre.Console": {
             "target": "Package",
             "version": "[0.52.0, )"
@@ -2164,6 +2245,10 @@
           "Spectre.Console.Cli": {
             "target": "Package",
             "version": "[0.52.0, )"
+          },
+          "System.Windows.Extensions": {
+            "target": "Package",
+            "version": "[9.0.10, )"
           },
           "Twilio": {
             "target": "Package",

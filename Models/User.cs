@@ -31,18 +31,38 @@ public class User
             return;
         }
 
-        Console.WriteLine("Ange ditt telefonnummer (inklusive landskod, t.ex. +46701234567): ");
-        var phoneNumber = Console.ReadLine()!;
-
-        // Telefonverifiering
-        bool verified = SMSVerification.SendVerificationCode(phoneNumber);
-        if (!verified)
+        //Säker inmatning av telefonnummer
+        string phoneNumber = "";
+        while (true)
         {
-            Console.WriteLine("Telefonverifiering misslyckades. Registrering avbruten.");
-            return;
+            Console.WriteLine("Ange ditt telefonnummer (inklusive landskod, t.ex. +46701234567): ");
+            phoneNumber = Console.ReadLine()!;
+
+            // Kontrollera att det börjar med + och innehåller bara siffror efteråt
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+            {
+                Console.WriteLine("Telefonnumret får inte vara tomt. Försök igen.");
+                continue;
+            }
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^\+\d{6,15}$"))
+            {
+                Console.WriteLine("Ogiltigt format! Exempel: +46701234567");
+                continue;
+            }
+
+            break;
         }
 
-        Console.WriteLine("Telefonnumret har verifierats!");
+        // Telefonverifiering
+        // bool verified = SMSVerification.SendVerificationCode(phoneNumber);
+        // if (!verified)
+        // {
+        //     Console.WriteLine("Telefonverifiering misslyckades. Registrering avbruten.");
+        //     return;
+        // }
+
+        // Console.WriteLine("Telefonnumret har verifierats!");
 
         string password = "";
         while (true)
@@ -122,12 +142,12 @@ public class User
         }
 
         // Telefonverifiering 2FA
-        bool verified = SMSVerification.SendVerificationCode(user.PhoneNumber);
-        if (!verified)
-        {
-            Console.WriteLine("Inloggningen avbröts pga fel verifieringskod.");
-            return false;
-        }
+        // bool verified = SMSVerification.SendVerificationCode(user.PhoneNumber);
+        // if (!verified)
+        // {
+        //     Console.WriteLine("Inloggningen avbröts pga fel verifieringskod.");
+        //     return false;
+        // }
 
         LoggedInUser = user;
         Console.WriteLine($"Välkommen, {user.Username}!");

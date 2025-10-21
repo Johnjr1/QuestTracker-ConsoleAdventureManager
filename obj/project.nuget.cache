@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "vJVHlGSfm80=",
+  "dgSpecHash": "wgKy6CW7R3k=",
   "success": true,
   "projectFilePath": "/Users/johnjr/Documents/Backend Cloud/Portfolio projekt/Project1-QuestTracker/QuestTracker-ConsoleAdventureManager/QuestTracker-ConsoleAdventureManager.csproj",
   "expectedPackageFiles": [
     "/Users/johnjr/.nuget/packages/dotenv.net/4.0.0/dotenv.net.4.0.0.nupkg.sha512",
+    "/Users/johnjr/.nuget/packages/managedbass/4.0.2/managedbass.4.0.2.nupkg.sha512",
     "/Users/johnjr/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.0/microsoft.extensions.dependencyinjection.abstractions.9.0.0.nupkg.sha512",
     "/Users/johnjr/.nuget/packages/microsoft.extensions.logging.abstractions/9.0.0/microsoft.extensions.logging.abstractions.9.0.0.nupkg.sha512",
     "/Users/johnjr/.nuget/packages/microsoft.identitymodel.abstractions/8.3.1/microsoft.identitymodel.abstractions.8.3.1.nupkg.sha512",
@@ -37,6 +38,7 @@
     "/Users/johnjr/.nuget/packages/system.text.encoding/4.3.0/system.text.encoding.4.3.0.nupkg.sha512",
     "/Users/johnjr/.nuget/packages/system.threading/4.3.0/system.threading.4.3.0.nupkg.sha512",
     "/Users/johnjr/.nuget/packages/system.threading.tasks/4.3.0/system.threading.tasks.4.3.0.nupkg.sha512",
+    "/Users/johnjr/.nuget/packages/system.windows.extensions/9.0.10/system.windows.extensions.9.0.10.nupkg.sha512",
     "/Users/johnjr/.nuget/packages/twilio/7.13.4/twilio.7.13.4.nupkg.sha512"
   ],
   "logs": []
