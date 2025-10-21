@@ -19,7 +19,7 @@ public static class GuildAdvisorAI
 {
     private static readonly HttpClient client = new HttpClient();
 
-    // Generate a quest using AI based on a given title
+    // Skapa en quest baserat på en titel med hjälp av OpenAI
     public static async Task<Quest?> GenerateQuestFromTitle(string title)
     {
         DotEnv.Load();
@@ -37,7 +37,7 @@ public static class GuildAdvisorAI
             model = "gpt-4o-mini",
             messages = new[]
             {
-                // System prompt guiding the AI's response format
+                // Prompt för att generera quest
                 new { role = "system", content =
                     "Du är en hjälpsam gille-rådgivare i ett fantasy-uppdragssystem. " +
                     "Svara ENBART i JSON-format: {\"title\": \"...\", \"description\": \"...\", \"priority\": \"Low/Medium/High\"}. " +
@@ -57,7 +57,7 @@ public static class GuildAdvisorAI
 
         if (!root.TryGetProperty("choices", out var choices))
         {
-            Console.WriteLine("Fel vid AI-svar.");
+            Console.WriteLine("There has been a problem with the AI response.");
             return null;
         }
 
@@ -65,7 +65,7 @@ public static class GuildAdvisorAI
 
         if (string.IsNullOrWhiteSpace(messageContent))
         {
-            Console.WriteLine("Tomt svar från AI.");
+            Console.WriteLine("No awnser from the AI.");
             return null;
         }
 
@@ -85,7 +85,7 @@ public static class GuildAdvisorAI
                 return null;
             }
             // Fråga användaren om hen vill ange datum själv
-            Console.Write("Vill du ange ett eget datum? (y/n): ");
+            Console.Write("Do You Want To Choose Your own Deadline? (y/n): ");
             string? input = Console.ReadLine();
             DateTime dueDate;
 
@@ -93,13 +93,13 @@ public static class GuildAdvisorAI
             {
                 while (true)
                 {
-                    Console.Write("Ange datum (YYYY-MM-DD): ");
+                    Console.Write("Choose Your Deadline (YYYY-MM-DD): ");
                     string? dateInput = Console.ReadLine();
                     if (DateTime.TryParse(dateInput, out dueDate))
                     {
                         break;
                     }
-                    Console.WriteLine("Ogiltigt datumformat, försök igen.");
+                    Console.WriteLine("Invalid Date Format, Please Try Again..");
                 }
             }
             else

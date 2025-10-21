@@ -34,20 +34,20 @@ public static class SMSVerification
         var msg = MessageResource.Create(
             to: new PhoneNumber(phoneNumber),
             from: from,
-            body: $"Din verifieringskod är: {secretCode}"
+            body: $"Your verification code is: {secretCode}"
         );
 
         //Ber användaren mata in koden
-        Console.WriteLine("Ett SMS med en verifieringskod har skickats till ditt telefonnummer. Vänligen ange koden för att fortsätta:");
+        Console.WriteLine("Please Enter The Verification Code Sent To Your Phone:");
         string UserSecretCode = Console.ReadLine();
         if (UserSecretCode == secretCode.ToString())
         {
-            Console.WriteLine("Du är verifierad! Välkommen till Quest Tracker.");
+            Console.WriteLine("You Are Verified! Welcome To Quest Tracker.");
             return true; 
         }
         else
         {
-            Console.WriteLine("Fel kod. Vänligen försök igen!");
+            Console.WriteLine("Wrong Code. Verification Failed.");
             return false;
         }
     }

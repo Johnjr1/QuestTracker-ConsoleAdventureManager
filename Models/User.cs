@@ -23,11 +23,29 @@ public class User
     // Registrering av hjälte
     public static void Register()
     {
-        Console.WriteLine("Ange din hjältes namn: ");
+        Console.Clear();
+        
+        // Skapa registreringspanel med episk styling
+        var creationPanel = new Panel(
+            "[bold yellow]⚔️ Welcome to the Guild, brave soul! ⚔️[/]\n" +
+            "[italic]Let us forge your legend in the annals of adventure...[/]"
+        )
+        {
+            Header = new PanelHeader("[bold cyan]🏰 HERO CREATION CHAMBER 🏰[/]", Justify.Center),
+            Border = BoxBorder.Double,
+            BorderStyle = new Style(Color.Blue)
+        };
+        
+        AnsiConsole.Write(creationPanel);
+        
+        AnsiConsole.MarkupLine("[yellow]Ange din hjältes namn: [/]");
         var username = Console.ReadLine()!;
         if (Users.Exists(u => u.Username == username))
         {
-            Console.WriteLine("Hjälten finns redan.");
+            AnsiConsole.MarkupLine("[red]❌ A hero with that name already exists in the guild![/]");
+            AnsiConsole.MarkupLine("[italic]Choose a different name, brave adventurer...[/]");
+            AnsiConsole.MarkupLine("\n[grey]Press any key to try again...[/]");
+            Console.ReadKey(true);
             return;
         }
 
@@ -35,19 +53,19 @@ public class User
         string phoneNumber = "";
         while (true)
         {
-            Console.WriteLine("Ange ditt telefonnummer (inklusive landskod, t.ex. +46701234567): ");
+            AnsiConsole.MarkupLine("[yellow]Enter Your Phone Number (including country code, e.g. +46701234567):[/]");
             phoneNumber = Console.ReadLine()!;
 
             // Kontrollera att det börjar med + och innehåller bara siffror efteråt
             if (string.IsNullOrWhiteSpace(phoneNumber))
             {
-                Console.WriteLine("Telefonnumret får inte vara tomt. Försök igen.");
+                Console.WriteLine("You Have To Enter Your Phone Number");
                 continue;
             }
 
             if (!System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^\+\d{6,15}$"))
             {
-                Console.WriteLine("Ogiltigt format! Exempel: +46701234567");
+                Console.WriteLine("Invalid Format! Example: +46701234567");
                 continue;
             }
 
@@ -58,25 +76,25 @@ public class User
         // bool verified = SMSVerification.SendVerificationCode(phoneNumber);
         // if (!verified)
         // {
-        //     Console.WriteLine("Telefonverifiering misslyckades. Registrering avbruten.");
+        //     Console.WriteLine("Something Went Wrong, Try Again!");
         //     return;
         // }
 
-        // Console.WriteLine("Telefonnumret har verifierats!");
+        // Console.WriteLine("Your Phone Number Has Been Verified");
 
         string password = "";
         while (true)
         {
-            Console.WriteLine("Ange ett lösenord: (Minst 6 tecken, 1 siffra, 1 stor bokstav, 1 specialtecken) ");
+            AnsiConsole.MarkupLine("[yellow]Choose Your Password: (At least 6 characters, 1 number, 1 capital letter, 1 special character) [/]");
             password = Console.ReadLine()!;
 
-            Console.Write("Bekräfta lösenordet: ");
+            Console.Write("Confirm Your Password: ");
             string confirmPassword = Console.ReadLine()!;
 
             // Skriv lösenordet två gånger och kontrollera att de matchar
             if (password != confirmPassword)
             {
-                Console.WriteLine("⚠️ Lösenorden matchar inte. Försök igen!");
+                Console.WriteLine("⚠️ The Passwords Do Not Match. Try Again!");
                 continue;
             }
 
@@ -97,17 +115,17 @@ public class User
 
             string strength;
             if (score <= 1)
-                strength = "Svagt";
+                strength = "Weak";
             else if (score == 2 || score == 3)
-                strength = "Medel";
+                strength = "Medium";
             else
-                strength = "Starkt";
+                strength = "Strong";
 
-            Console.WriteLine($"\nLösenordsstyrka: {strength}");
+            Console.WriteLine($"\nPassword Strenght: {strength}");
 
             if (score < 3)
             {
-                Console.WriteLine("Lösenordet är för svagt. Försök igen. Lösenordet måste vara minst 6 tecken, 1 siffra, 1 stor bokstav, 1 specialtecken");
+                Console.WriteLine("The Password Is Too Weak. Please Try Again. (at least 6 characters, 1 number, 1 uppercase letter, 1 special character)");
                 continue;
             }
             break;
@@ -121,23 +139,53 @@ public class User
             PhoneNumber = phoneNumber
         });
 
-        Console.WriteLine("Registrering lyckades!");
-        AnsiConsole.MarkupLine("\n[grey]Tryck på en tangent för att återgå till menyn...[/]");
+        // Visa meddelande om lyckad registrering
+        var successPanel = new Panel(
+            $"[bold green]🎉 Welcome To The Guild, {username}! 🎉[/]\n\n" +
+            "[italic]Your Legend Begins Now, Brave Adventurer![/]\n" +
+            "The Guild Halls Await Your Heroic Deeds..."
+        )
+        {
+            Header = new PanelHeader("[bold green]✨ HERO CREATED SUCCESSFULLY ✨[/]", Justify.Center),
+            Border = BoxBorder.Double,
+            BorderStyle = new Style(Color.Green)
+        };
+        
+        AnsiConsole.Write(successPanel);
+        Console.WriteLine("Your Hero Was Created!");
+        AnsiConsole.MarkupLine("\n[grey]Press any key to return to the guild hall...[/]");
         Console.ReadKey(true);
     }
 
     // Inloggning av hjälte
     public static bool Login()
     {
-        Console.Write("Hjältenamn: ");
+        Console.Clear();
+        
+        var loginPanel = new Panel(
+            "[bold yellow]🔑 Enter The Guild Halls 🔑[/]\n" +
+            "[italic]Prove Your Identity, Brave Adventurer...[/]"
+        )
+        {
+            Header = new PanelHeader("[bold cyan]🏰 GUILD ENTRANCE 🏰[/]", Justify.Center),
+            Border = BoxBorder.Double,
+            BorderStyle = new Style(Color.Blue)
+        };
+        
+        AnsiConsole.Write(loginPanel);
+        
+        Console.Write("Enter The Name Of Your Hero: ");
         var username = Console.ReadLine()!;
-        Console.Write("Lösenord: ");
+        Console.Write("Enter Your Password: ");
         var password = Console.ReadLine()!;
 
         var user = Users.Find(u => u.Username == username);
         if (user == null || user.PasswordHash != Hash(password))
         {
-            Console.WriteLine("Fel användarnamn eller lösenord.");
+            AnsiConsole.MarkupLine("[red]❌ Invalid Hero Name Or Incantation![/]");
+            AnsiConsole.MarkupLine("[italic]The Guild Guards Do Not Recognize You...[/]");
+            AnsiConsole.MarkupLine("\n[grey]Press Any Key To Try Again...[/]");
+            Console.ReadKey(true);
             return false;
         }
 
@@ -145,12 +193,28 @@ public class User
         // bool verified = SMSVerification.SendVerificationCode(user.PhoneNumber);
         // if (!verified)
         // {
-        //     Console.WriteLine("Inloggningen avbröts pga fel verifieringskod.");
+        //     Console.WriteLine("The Code Was Wrong, Try Again...");
         //     return false;
         // }
 
         LoggedInUser = user;
-        Console.WriteLine($"Välkommen, {user.Username}!");
+        
+        // Visa välkomsmeddelande när inloggningen lyckas
+        var welcomePanel = new Panel(
+            $"[bold green]🎉 Welcome Back, {user.Username}! 🎉[/]\n\n" +
+            "[italic]Your Quests Await In The Guild Hall...[/]"
+        )
+        {
+            Header = new PanelHeader("[bold green]✨ GUILD HALL ACCESS GRANTED ✨[/]", Justify.Center),
+            Border = BoxBorder.Double,
+            BorderStyle = new Style(Color.Green)
+        };
+        
+        AnsiConsole.Write(welcomePanel);
+        Console.WriteLine($"Welcome, {user.Username}!");
+        AnsiConsole.MarkupLine("\n[grey]Press any key to enter the guild hall...[/]");
+        Console.ReadKey(true);
+        
         return true;
     }
 
@@ -158,8 +222,22 @@ public class User
     // Utloggning
     public static void Logout()
     {
+        var user = LoggedInUser?.Username ?? "Adventurer";
         LoggedInUser = null;
-        Console.WriteLine("Du har loggat ut.");
+        
+        var logoutPanel = new Panel(
+            $"[bold yellow]👋 Farewell, {user}! 👋[/]\n\n" +
+            "[italic]May Your Adventures Be Legendary...[/]\n" +
+            "The Guild Halls Await Your Return..."
+        )
+        {
+            Header = new PanelHeader("[bold red]🚪 GUILD HALL EXIT 🚪[/]", Justify.Center),
+            Border = BoxBorder.Double,
+            BorderStyle = new Style(Color.Red)
+        };
+        
+        AnsiConsole.Write(logoutPanel);
+        Console.WriteLine("You Have Logged Out Sucesfully.");
     }
 
     // Hjälpmetoder för säkert lösenord
