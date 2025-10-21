@@ -40,7 +40,7 @@ public static class GuildAdvisorAI
                 // System prompt guiding the AI's response format
                 new { role = "system", content =
                     "Du är en hjälpsam gille-rådgivare i ett fantasy-uppdragssystem. " +
-                    "Svara ENBART i JSON-format: {\"title\": \"...\", \"description\": \"...\", \"priority\": \"Low/Medium/High\", \"duedate\": \"YYYY-MM-DD\"}. " +
+                    "Svara ENBART i JSON-format: {\"title\": \"...\", \"description\": \"...\", \"priority\": \"Low/Medium/High\"}. " +
                     "Gör texten episk men kortfattad. Beskrivningen ska passa ett spel-uppdrag." },
                 new { role = "user", content = $"Titel: {title}" }
             }
@@ -83,6 +83,30 @@ public static class GuildAdvisorAI
             {
                 Console.WriteLine("Misslyckades att deserialisera AI-svaret.");
                 return null;
+            }
+            // Fråga användaren om hen vill ange datum själv
+            Console.Write("Vill du ange ett eget datum? (y/n): ");
+            string? input = Console.ReadLine();
+            DateTime dueDate;
+
+            if (!string.IsNullOrWhiteSpace(input) && input.Trim().ToLower() == "y")
+            {
+                while (true)
+                {
+                    Console.Write("Ange datum (YYYY-MM-DD): ");
+                    string? dateInput = Console.ReadLine();
+                    if (DateTime.TryParse(dateInput, out dueDate))
+                    {
+                        break;
+                    }
+                    Console.WriteLine("Ogiltigt datumformat, försök igen.");
+                }
+            }
+            else
+            {
+                // Om användaren inte vill ange datum: slumpa mellan idag och 14 dagar framåt
+                var random = new Random();
+                dueDate = DateTime.Now.Date.AddDays(random.Next(0, 15));
             }
 
             // Skapa och returnera en Quest baserat på AI-data

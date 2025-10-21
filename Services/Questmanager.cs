@@ -101,7 +101,18 @@ public static class QuestManager
     // Uppdatera ett befintligt uppdrag
     public static void UpdateQuest(User user)
     {
-        Console.Write("Ange titel på uppdraget att uppdatera: ");
+        if (user.Quests.Count == 0)
+        {
+            Console.WriteLine("Inga uppdrag att uppdatera.");
+            return;
+        }
+
+        //Visar alla uppdrag först
+        Console.WriteLine("\nDina nuvarande uppdrag:");
+        ShowQuests(user);
+
+        // Fråga vilket uppdrag som ska uppdateras
+        Console.Write("\nAnge titel på uppdraget att uppdatera: ");
         var title = Console.ReadLine()!;
         var quest = user.Quests.Find(q => q.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
         if (quest == null)
@@ -110,23 +121,33 @@ public static class QuestManager
             return;
         }
 
+        // Uppdatera titeln
         Console.Write("Ny titel (lämna tom för att behålla nuvarande): ");
         var newTitle = Console.ReadLine()!;
         if (!string.IsNullOrWhiteSpace(newTitle))
             quest.Title = newTitle;
 
+        // Uppdatera beskrivningen
         Console.Write("Ny beskrivning (lämna tom för att behålla nuvarande): ");
         var newDesc = Console.ReadLine()!;
         if (!string.IsNullOrWhiteSpace(newDesc))
             quest.Description = newDesc;
 
-        Console.Write("Ny deadline (yyy-mm-dd, lämna tom för att behålla nuvarande): ");
+        // Uppdatera deadline
+        Console.Write("Ny deadline (yyyy-mm-dd, lämna tom för att behålla nuvarande): ");
         var newDeadlineInput = Console.ReadLine()!;
         if (DateTime.TryParse(newDeadlineInput, out var newDeadline))
             quest.DueDate = newDeadline;
 
+        // Uppdatera prioritet
+        Console.Write("Ny prioritet (Low, Medium, High, lämna tom för att behålla nuvarande): ");
+        var newPriority = Console.ReadLine()!;
+        if (!string.IsNullOrWhiteSpace(newPriority))
+            quest.Priority = newPriority;
+
         Console.WriteLine("Uppdrag uppdaterat!");
     }
+
 
     // Kontrollera om några uppdrag närmar sig deadline och skicka notifikationer
     public static void CheckForUpcomingDeadlines(User user)
@@ -175,7 +196,7 @@ public static class QuestManager
                 Console.WriteLine($"- {q.Title} (Deadline: {q.DueDate:g})");
             }
         }
-        
+
         // Sammanfattning av användarens uppdrag
         Console.WriteLine("\nSammanfattning:");
         Console.WriteLine($"Du har {activeQuests} pågående quest{(activeQuests == 1 ? "" : "s")}, " +
