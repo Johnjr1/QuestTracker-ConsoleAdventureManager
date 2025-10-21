@@ -40,3 +40,7 @@
 /Users/johnjr/Documents/Backend Cloud/Portfolio projekt/Project1-QuestTracker/QuestTracker-ConsoleAdventureManager/bin/Debug/net9.0/ru/Spectre.Console.Cli.resources.dll
 /Users/johnjr/Documents/Backend Cloud/Portfolio projekt/Project1-QuestTracker/QuestTracker-ConsoleAdventureManager/bin/Debug/net9.0/sv/Spectre.Console.Cli.resources.dll
 /Users/johnjr/Documents/Backend Cloud/Portfolio projekt/Project1-QuestTracker/QuestTracker-ConsoleAdventureManager/bin/Debug/net9.0/zh-Hans/Spectre.Console.Cli.resources.dll
+/Users/johnjr/Documents/Backend Cloud/Portfolio projekt/Project1-QuestTracker/QuestTracker-ConsoleAdventureManager/bin/Debug/net9.0/Resources/song.wav
+/Users/johnjr/Documents/Backend Cloud/Portfolio projekt/Project1-QuestTracker/QuestTracker-ConsoleAdventureManager/bin/Debug/net9.0/System.Windows.Extensions.dll
+/Users/johnjr/Documents/Backend Cloud/Portfolio projekt/Project1-QuestTracker/QuestTracker-ConsoleAdventureManager/bin/Debug/net9.0/runtimes/win/lib/net9.0/System.Windows.Extensions.dll
+/Users/johnjr/Documents/Backend Cloud/Portfolio projekt/Project1-QuestTracker/QuestTracker-ConsoleAdventureManager/bin/Debug/net9.0/ManagedBass.dll
