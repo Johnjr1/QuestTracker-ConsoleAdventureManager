@@ -13,10 +13,13 @@ using System.Text.Json.Nodes;
 using dotenv.net;
 using Twilio.Rest.Serverless.V1.Service.Environment;
 
+
+// AI-driven guild advisor for generating quests
 public static class GuildAdvisorAI
 {
     private static readonly HttpClient client = new HttpClient();
 
+    // Generate a quest using AI based on a given title
     public static async Task<Quest?> GenerateQuestFromTitle(string title)
     {
         DotEnv.Load();
@@ -34,7 +37,8 @@ public static class GuildAdvisorAI
             model = "gpt-4o-mini",
             messages = new[]
             {
-                new { role = "system", content = 
+                // System prompt guiding the AI's response format
+                new { role = "system", content =
                     "Du är en hjälpsam gille-rådgivare i ett fantasy-uppdragssystem. " +
                     "Svara ENBART i JSON-format: {\"title\": \"...\", \"description\": \"...\", \"priority\": \"Low/Medium/High\", \"duedate\": \"YYYY-MM-DD\"}. " +
                     "Gör texten episk men kortfattad. Beskrivningen ska passa ett spel-uppdrag." },
@@ -59,11 +63,29 @@ public static class GuildAdvisorAI
 
         var messageContent = choices[0].GetProperty("message").GetProperty("content").GetString();
 
+        if (string.IsNullOrWhiteSpace(messageContent))
+        {
+            Console.WriteLine("Tomt svar från AI.");
+            return null;
+        }
+
+        // Rensa bort eventuella ```json eller ```-block
+        messageContent = messageContent
+            .Replace("```json", "")
+            .Replace("```", "")
+            .Trim();
+
         try
         {
-            var questData = JsonSerializer.Deserialize<QuestAIResponse>(messageContent!);
-            if (questData == null) return null;
+            var questData = JsonSerializer.Deserialize<QuestAIResponse>(messageContent);
 
+            if (questData == null)
+            {
+                Console.WriteLine("Misslyckades att deserialisera AI-svaret.");
+                return null;
+            }
+
+            // Skapa och returnera en Quest baserat på AI-data
             return new Quest
             {
                 Title = questData.title,
@@ -72,6 +94,8 @@ public static class GuildAdvisorAI
                 DueDate = DateTime.TryParse(questData.duedate, out var d) ? d : DateTime.Now.AddDays(3)
             };
         }
+
+        // Fånga JSON-tolkningsfel
         catch (Exception ex)
         {
             Console.WriteLine($"Fel vid tolkning av AI-data: {ex.Message}");
@@ -81,6 +105,7 @@ public static class GuildAdvisorAI
         }
     }
 
+    // Intern klass för att mappa AI:s JSON-svar
     private class QuestAIResponse
     {
         public string title { get; set; } = "";

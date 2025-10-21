@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuestTracker-ConsoleAdventureManager")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+68a7a6ce579654c78b3781d945c70555d5b76039")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+917189ed62cbaa41ca3c45acca8470b83ae645d7")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuestTracker-ConsoleAdventureManager")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuestTracker-ConsoleAdventureManager")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
