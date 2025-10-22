@@ -73,14 +73,14 @@ public class User
         }
 
         // Telefonverifiering
-        // bool verified = SMSVerification.SendVerificationCode(phoneNumber);
-        // if (!verified)
-        // {
-        //     Console.WriteLine("Something Went Wrong, Try Again!");
-        //     return;
-        // }
+        bool verified = SMSVerification.SendVerificationCode(phoneNumber);
+        if (!verified)
+        {
+            Console.WriteLine("Something Went Wrong, Try Again!");
+            return;
+        }
 
-        // Console.WriteLine("Your Phone Number Has Been Verified");
+        Console.WriteLine("Your Phone Number Has Been Verified");
 
         string password = "";
         while (true)
@@ -190,12 +190,12 @@ public class User
         }
 
         // Telefonverifiering 2FA
-        // bool verified = SMSVerification.SendVerificationCode(user.PhoneNumber);
-        // if (!verified)
-        // {
-        //     Console.WriteLine("The Code Was Wrong, Try Again...");
-        //     return false;
-        // }
+        bool verified = SMSVerification.SendVerificationCode(user.PhoneNumber);
+        if (!verified)
+        {
+            Console.WriteLine("The Code Was Wrong, Try Again...");
+            return false;
+        }
 
         LoggedInUser = user;
         
