@@ -70,13 +70,13 @@ public static class QuestManager
 
         // Manuell skapelse av uppdrag
         AnsiConsole.MarkupLine("[bold yellow]📝 Create your own quest:[/]");
-        AnsiConsole.MarkupLine("[yellow]Titel: ");
+        AnsiConsole.MarkupLine("[yellow]Title: [/]");
         var manualTitle = Console.ReadLine()!;
-        AnsiConsole.MarkupLine("[yellow]Description: ");
+        AnsiConsole.MarkupLine("[yellow]Description: [/]");
         var desc = Console.ReadLine()!;
-        AnsiConsole.MarkupLine("[yellow]Deadline (yyyy-mm-dd): ");
+        AnsiConsole.MarkupLine("[yellow]Deadline (yyyy-mm-dd): [/]");
         DateTime.TryParse(Console.ReadLine(), out var deadline);
-        AnsiConsole.MarkupLine("[yellow]Priority (Low, Medium, High): ");
+        AnsiConsole.MarkupLine("[yellow]Priority (Low, Medium, High): [/]");
         var priority = Console.ReadLine()!;
 
         user.Quests.Add(new Quest
@@ -89,10 +89,10 @@ public static class QuestManager
 
         var successPanel = new Panel(
             "[bold green]✨ Quest Created Successfully! ✨[/]\n\n" +
-            $"[bold]Titel:[/] {manualTitle}\n" +
-            $"[bold]Beskrivning:[/] {desc}\n" +
-            $"[bold]Prioritet:[/] {priority}\n" +
-            $"[bold]Deadline:[/] {(deadline == default ? DateTime.Now.AddDays(3) : deadline):d}"
+            $"[bold]Title: [/] {manualTitle}\n" +
+            $"[bold]Description: [/] {desc}\n" +
+            $"[bold]Priority: [/] {priority}\n" +
+            $"[bold]Deadline: [/] {(deadline == default ? DateTime.Now.AddDays(3) : deadline):d}"
         )
         {
             Header = new PanelHeader("[bold green]📜 QUEST CREATED SUCCESSFULLY 📜[/]", Justify.Center),
@@ -143,10 +143,10 @@ public static class QuestManager
 
         // Skapa en tabell för att visa uppdragen
         var questTable = new Table()
-            .AddColumn(new TableColumn("[bold]Status[/]").Centered())
-            .AddColumn(new TableColumn("[bold]Quest Title[/]").LeftAligned())
-            .AddColumn(new TableColumn("[bold]Priority[/]").Centered())
-            .AddColumn(new TableColumn("[bold]Deadline[/]").Centered());
+            .AddColumn(new TableColumn("[bold]Status [/]").Centered())
+            .AddColumn(new TableColumn("[bold]Quest Title [/]").LeftAligned())
+            .AddColumn(new TableColumn("[bold]Priority [/]").Centered())
+            .AddColumn(new TableColumn("[bold]Deadline [/]").Centered());
 
         questTable.Border = TableBorder.Double;
         questTable.BorderStyle = new Style(Color.Grey);
@@ -184,7 +184,7 @@ public static class QuestManager
     // Markera ett uppdrag som klart
     public static void CompleteQuest(User user)
     {
-        AnsiConsole.MarkupLine("[bold yellow]Write The Title Of The Quest You Want To Complete: ");
+        AnsiConsole.MarkupLine("[bold yellow]Write The Title Of The Quest You Want To Complete: [/]");
         var title = Console.ReadLine()!;
         var quest = user.Quests.Find(q => q.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
         if (quest == null)
@@ -221,19 +221,19 @@ public static class QuestManager
         }
 
         // Uppdatera titeln
-        Console.Write("New title (leave blank to keep current): ");
+        Console.WriteLine("New title (leave blank to keep current): ");
         var newTitle = Console.ReadLine()!;
         if (!string.IsNullOrWhiteSpace(newTitle))
             quest.Title = newTitle;
 
         // Uppdatera beskrivningen
-        Console.Write("New Description (leave blank to keep current): ");
+        Console.WriteLine("New Description (leave blank to keep current): ");
         var newDesc = Console.ReadLine()!;
         if (!string.IsNullOrWhiteSpace(newDesc))
             quest.Description = newDesc;
 
         // Uppdatera deadline
-        Console.Write("New Deadline (yyyy-mm-dd, leave blank to keep current): ");
+        Console.WriteLine("New Deadline (yyyy-mm-dd, leave blank to keep current): ");
         var newDeadlineInput = Console.ReadLine()!;
         if (DateTime.TryParse(newDeadlineInput, out var newDeadline))
             quest.DueDate = newDeadline;
